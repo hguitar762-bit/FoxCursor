@@ -6,7 +6,7 @@
 
 ![从原图提取的狐萝卜素材预览](docs/character-preview.png)
 
-> **当前验证状态：** macOS 上完成 Windows 交叉编译及核心逻辑测试。Windows 上也成功输入
+> **当前验证状态：** macOS 上完成 Windows 交叉编译及核心逻辑测试。Windows 上也成功输入。
 
 ## 快速运行
 
