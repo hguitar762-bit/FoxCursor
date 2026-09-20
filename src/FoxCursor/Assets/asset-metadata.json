@@ -1,0 +1,21 @@
+{
+  "source": "assets/source/fox-original.png",
+  "sourceCropOrigin": [
+    102,
+    82
+  ],
+  "size": [
+    1114,
+    784
+  ],
+  "creamRGB": [
+    253,
+    239,
+    205
+  ],
+  "leafPivot": [
+    59.964093357271096,
+    35.98214285714286
+  ],
+  "method": "C# exterior flood fill, preserved opaque belly, original interior RGB, neutral JPEG edge matte removal, original-junction layer masks. No Python and no character regeneration."
+}

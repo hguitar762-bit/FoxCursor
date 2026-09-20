@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <!-- WPF owns the application and its PerMonitorV2 manifest; WinForms is only the tray. -->
+    <NoWarn>$(NoWarn);WFAC010</NoWarn>
+    <ApplicationIcon>Assets/fox.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <StartupObject>FoxCursor.App.Program</StartupObject>
+    <Version>0.1.0</Version>
+    <AssemblyName>FoxCursor</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../FoxCursor.Core/FoxCursor.Core.csproj" />
+    <ProjectReference Include="../FoxCursor.Guardian/FoxCursor.Guardian.csproj" ReferenceOutputAssembly="false" />
+    <Resource Include="Assets/*.png" />
+    <Resource Include="Assets/fox.ico" />
+    <Compile Include="../FoxCursor.Guardian/CursorNative.cs" Link="Input/CursorNative.cs" />
+  </ItemGroup>
+  <Target Name="CopyGuardian" AfterTargets="Build">
+    <ItemGroup><GuardianFiles Include="../FoxCursor.Guardian/bin/$(Configuration)/net8.0-windows/FoxCursor.Guardian*" /></ItemGroup>
+    <Copy SourceFiles="@(GuardianFiles)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+  </Target>
+</Project>

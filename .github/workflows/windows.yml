@@ -1,0 +1,35 @@
+name: Windows build and portable package
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Rebuild original-image assets using C#
+        run: dotnet run --project tools/FoxCursor.AssetTool -c Release -- .
+      - name: Build solution
+        run: dotnet build FoxCursor.sln -c Release
+      - name: Test state, physics and settings
+        run: dotnet run --project tests/FoxCursor.Tests -c Release --no-build
+      - name: Publish portable x64 app and guardian
+        run: ./scripts/publish.ps1
+      - name: Render real WPF controls without input hooks or cursor changes
+        shell: pwsh
+        run: |
+          $p = Start-Process ./artifacts/win-x64/FoxCursor.exe -ArgumentList '--render-preview', 'artifacts/preview' -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw 'WPF rendering failed' }
+          if (!(Test-Path artifacts/preview/settings-window.png)) { throw 'Missing settings preview' }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: FoxCursor-win-x64
+          path: artifacts/*-portable.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: WPF-previews
+          path: artifacts/preview/*.png
